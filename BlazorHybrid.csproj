@@ -11,6 +11,17 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Components.WebView.WindowsForms" Version="8.0.93" />
     <PackageReference Include="Microsoft.Extensions.Http" Version="8.0.1" />
+    <PackageReference Include="Microsoft.Office.Interop.Outlook" Version="15.0.4797.1004" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+	<COMReference Include="Microsoft.Office.Interop.Outlook">
+		<WrapperTool>tlbimp</WrapperTool>
+		<VersionMinor>0</VersionMinor>
+		<VersionMajor>9</VersionMajor>
+		<Guid>00062fff-0000-0000-c000-000000000046</Guid>
+		<Lcid>0</Lcid>
+		<Isolated>false</Isolated>
+		<EmbedInteropTypes>true</EmbedInteropTypes>
+	</COMReference>
   </ItemGroup>
 
 </Project>

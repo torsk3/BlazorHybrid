@@ -1,5 +1,7 @@
 ﻿@inject IHttpClientFactory HttpClientFactory
 @inject HttpClient HttpClinet
+@using System.Diagnostics
+@using Microsoft.Office.Interop.Outlook
 
 <h1>Counter</h1>
 
@@ -7,11 +9,19 @@
 
 <button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
 
+<button class="btn btn-secondary" @onclick="OpenNotepad">Open Notepad</button>
+
+<button class="btn btn-info" @onclick="AddOutlookSchedule">Add Outlook Schedule</button>
+
+
 <p>@githubInfo</p>
+
+<p>@outlookMessage</p>
 
 @code {
     private int currentCount = 0;
     private string githubInfo = "";
+    private string outlookMessage = "";
 
     private void IncrementCount()
     {
@@ -31,9 +41,61 @@
             var response = await HttpClinet.GetStringAsync("https://api.github.com/repos/dotnet/aspnetcore");
             githubInfo = $"GitHub API Response: {response.Substring(0, 100)}...";
         }
-        catch (Exception ex)
+        catch (System.Exception ex)
         {
             githubInfo = $"Error fetching GitHub info: {ex.Message}";
         }
     }
+
+    private void OpenNotepad()
+    {
+        try
+        {
+            Process.Start("notepad.exe");
+        }
+        catch (System.Exception ex)
+        {
+            Console.WriteLine($"Error opening Notepad: {ex.Message}");
+        }
+    }
+
+    private void AddOutlookSchedule()
+    {
+        
+        Application? outlookApp = null;
+        try
+        {
+            outlookApp = new Application();
+            AppointmentItem newAppointment = (AppointmentItem)outlookApp.CreateItem(OlItemType.olAppointmentItem);
+
+            newAppointment.Subject = "New Schedule Item";
+            newAppointment.Body = "This is a new schedule item created from Blazor.";
+            newAppointment.Start = DateTime.Now.AddHours(1);
+            newAppointment.Duration = 30; // Duration in minutes
+            newAppointment.Location = "Office";
+            newAppointment.ReminderSet = true;
+            newAppointment.ReminderMinutesBeforeStart = 15;
+
+            newAppointment.Save();
+
+            outlookMessage = "New Outlook schedule item added successfully!";
+        }
+        catch (System.Runtime.InteropServices.COMException comEx)
+        {
+            outlookMessage = $"COM Exception: {comEx.Message}\nError Code: {comEx.ErrorCode}\nStack Trace: {comEx.StackTrace}";
+        }
+        catch (System.Exception ex)
+        {
+            outlookMessage = $"General Exception: {ex.Message}\nStack Trace: {ex.StackTrace}";
+        }
+        finally
+        {
+            if (outlookApp != null)
+            {
+                System.Runtime.InteropServices.Marshal.ReleaseComObject(outlookApp);
+            }
+        }
+        
+    }
+
 }

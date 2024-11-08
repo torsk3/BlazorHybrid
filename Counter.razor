@@ -1,0 +1,39 @@
+﻿@inject IHttpClientFactory HttpClientFactory
+@inject HttpClient HttpClinet
+
+<h1>Counter</h1>
+
+<p>Current count: @currentCount</p>
+
+<button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+
+<p>@githubInfo</p>
+
+@code {
+    private int currentCount = 0;
+    private string githubInfo = "";
+
+    private void IncrementCount()
+    {
+        currentCount++;
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await FetchGitHubInfo();
+    }
+
+    private async Task FetchGitHubInfo()
+    {
+        try
+        {
+            HttpClinet.DefaultRequestHeaders.Add("User-Agent", "BlazorHybridApp");
+            var response = await HttpClinet.GetStringAsync("https://api.github.com/repos/dotnet/aspnetcore");
+            githubInfo = $"GitHub API Response: {response.Substring(0, 100)}...";
+        }
+        catch (Exception ex)
+        {
+            githubInfo = $"Error fetching GitHub info: {ex.Message}";
+        }
+    }
+}

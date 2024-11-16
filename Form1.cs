@@ -14,7 +14,7 @@ namespace BlazorHybrid
             services.AddHttpClient();
             blazorWebView1.HostPage = "wwwroot\\index.html";
             blazorWebView1.Services = services.BuildServiceProvider();
-            blazorWebView1.RootComponents.Add<Counter>("#app");
+            blazorWebView1.RootComponents.Add<App>("#app");
         }
     }
 }

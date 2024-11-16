@@ -12,6 +12,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Components.WebView.WindowsForms" Version="8.0.93" />
     <PackageReference Include="Microsoft.Extensions.Http" Version="8.0.1" />
     <PackageReference Include="Microsoft.Office.Interop.Outlook" Version="15.0.4797.1004" />
+    <PackageReference Include="MudBlazor" Version="7.15.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 	<COMReference Include="Microsoft.Office.Interop.Outlook">
 		<WrapperTool>tlbimp</WrapperTool>

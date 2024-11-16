@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Components.WebView.WindowsForms;
 using Microsoft.Extensions.DependencyInjection;
+using MudBlazor.Services;
 
 namespace BlazorHybrid
 {
@@ -12,6 +13,7 @@ namespace BlazorHybrid
             var services = new ServiceCollection();
             services.AddWindowsFormsBlazorWebView();
             services.AddHttpClient();
+            services.AddMudServices();
             blazorWebView1.HostPage = "wwwroot\\index.html";
             blazorWebView1.Services = services.BuildServiceProvider();
             blazorWebView1.RootComponents.Add<App>("#app");

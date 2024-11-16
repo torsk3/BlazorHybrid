@@ -1,0 +1,87 @@
+﻿@page "/kanban"
+@using Microsoft.AspNetCore.Components
+@using System.ComponentModel.DataAnnotations
+
+<MudDropContainer T="KanbanTaskItem" @ref="_dropContainer" Items="@_tasks" ItemsSelector="@((item,column) => item.Status == column)" ItemDropped="TaskUpdated" Class="d-flex flex-row">
+	<ChildContent>
+		@foreach (var item in _sections)
+		{
+			<MudPaper Elevation="0" Width="224px" MinHeight="400px" Class="pa-4 ma-4 d-flex flex-column mud-background-gray rounded-lg">
+				<MudToolBar Gutters="false">
+					<MudText Typo="Typo.subtitle1"><b>@item.Name</b></MudText>
+				</MudToolBar>
+				<MudDropZone T="KanbanTaskItem" Identifier="@item.Name" Class="mud-height-full" AllowReorder="true"/>
+			</MudPaper>
+		}
+	</ChildContent>
+	<ItemRenderer>
+        <MudCard Class="pa-4 rounded-lg my-3">
+			<MudIconButton Icon=@Icons.Material.Filled.EditCalendar @onclick="@(e => OnClick(context))" />
+            <MudText Elevation="25">@context.Name</MudText>
+            <MudText Elevation="25">@context.Status</MudText>
+        </MudCard>
+	</ItemRenderer>
+</MudDropContainer>
+
+<MudPaper Elevation="0" Width="224px" MinHeight="100px" Class="pa-4 ma-4 d-flex flex-column mud-background-gray rounded-lg">
+	@if (calendarItem != null)
+	{
+		<MudText Elevation="25">@calendarItem.Name @calendarItem.Status</MudText>
+	}
+</MudPaper>
+
+@code {
+	private MudDropContainer<KanbanTaskItem>? _dropContainer;
+	private KanbanTaskItem? calendarItem;
+
+	/* handling board events */
+	private void TaskUpdated(MudItemDropInfo<KanbanTaskItem> info)
+	{
+		info.Item.Status = info.DropzoneIdentifier;
+	}
+
+	private void OnClick(KanbanTaskItem item)
+	{
+		calendarItem = item;
+	}
+
+	/* Setup for board  */
+	private List<KanBanSections> _sections = new()
+		{
+			new KanBanSections("To Do", false, String.Empty),
+			new KanBanSections("In Process", false, String.Empty),
+			new KanBanSections("Done", false, String.Empty),
+		};
+
+	public class KanBanSections
+	{
+		public string Name { get; init; }
+		public bool NewTaskOpen { get; set; }
+		public string NewTaskName { get; set; }
+
+		public KanBanSections(string name, bool newTaskOpen, string newTaskName)
+		{
+			Name = name;
+			NewTaskOpen = newTaskOpen;
+			NewTaskName = newTaskName;
+		}
+	}
+	public class KanbanTaskItem
+	{
+		public string Name { get; init; }
+		public string Status { get; set; }
+
+		public KanbanTaskItem(string name, string status)
+		{
+			Name = name;
+			Status = status;
+		}
+	}
+
+	private List<KanbanTaskItem> _tasks = new()
+		{
+			new KanbanTaskItem("Write unit test", "To Do"),
+			new KanbanTaskItem("Some docu stuff", "To Do"),
+			new KanbanTaskItem("Walking the dog", "To Do"),
+		};
+}

@@ -9,6 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Heron.MudCalendar" Version="2.0.3" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebView.WindowsForms" Version="8.0.93" />
     <PackageReference Include="Microsoft.Extensions.Http" Version="8.0.1" />
     <PackageReference Include="Microsoft.Office.Interop.Outlook" Version="15.0.4797.1004" />

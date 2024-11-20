@@ -1,0 +1,37 @@
+﻿@page "/calendar"
+
+<MudPaper Class="pa-4">
+    <MudText Typo="Typo.h3" Class="mb-4">Calendar</MudText>
+
+    <MudGrid>
+        <MudItem xs="12" sm="8">
+            <MudCalendar @bind-Date="@date"
+                         WeekFormat="WeekFormat.FirstDayOfMonth"
+                         ShowWeekNumbers="true"
+                         DisableToolbar="false"
+                         AutoClose="true"
+                         PickerVariant="PickerVariant.Dialog"
+                         Color="Color.Primary" />
+        </MudItem>
+        <MudItem xs="12" sm="4">
+            <MudPaper Class="pa-4" Elevation="2">
+                <MudText Typo="Typo.h6">Selected Date Details</MudText>
+                <MudDivider Class="my-2" />
+                <MudText>Date: @date.ToLongDateString()</MudText>
+                <MudText>Day of Week: @date.DayOfWeek</MudText>
+                <MudText>Week Number: @System.Globalization.ISOWeek.GetWeekOfYear(date)</MudText>
+            </MudPaper>
+        </MudItem>
+    </MudGrid>
+
+    <MudButton Class="mt-4"
+               Variant="Variant.Filled"
+               Color="Color.Primary"
+               OnClick="@(() => date = DateTime.Today)">
+        Reset to Today
+    </MudButton>
+</MudPaper>
+
+@code {
+    private DateTime date = DateTime.Today;
+}
